@@ -1,7 +1,7 @@
-from dct2.dct2_scipy import *
 
 
 def main():
+    print("Benvenuto nel programma di analisi delle matrici!")
 
 
 if __name__ == "__main__":

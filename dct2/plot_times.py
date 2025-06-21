@@ -1,21 +1,18 @@
-import numpy as np
 import matplotlib.pyplot as plt
 
-# Carica i dati
-times_custom = np.loadtxt("times_custom.txt")
-times_scipy = np.loadtxt("times_scipy.txt")
-N_values = np.loadtxt("N_values.txt")
+def plot_times(N_values, times_custom, times_scipy):
+    fig, ax = plt.subplots(figsize=(8, 6))
 
-# Plot
-plt.figure(figsize=(8,6))
-plt.semilogy(N_values, times_custom, 'o-', label='DCT2 Custom (O(N^3))')
-plt.semilogy(N_values, times_scipy, 's-', label='DCT2 Scipy (O(N^2 logN))')
+    ax.semilogy(N_values, times_custom, 'o-', label='DCT2 Custom (O(N^3))')
+    ax.semilogy(N_values, times_scipy, 's-', label='DCT2 Scipy (O(N^2 logN))')
 
-plt.xlabel('Dimensione matrice N')
-plt.ylabel('Tempo di esecuzione (s)')
-plt.title('Confronto tempi DCT2 custom vs scipy')
-plt.grid(True, which="both", ls="--")
-plt.legend()
-plt.tight_layout()
-plt.savefig("confronto_tempi.png")
-plt.show()
+    ax.set_xlabel('Dimensione matrice N')
+    ax.set_ylabel('Tempo di esecuzione (s)')
+    ax.set_title('Confronto tempi DCT2 custom vs scipy')
+    ax.grid(True, which="major", linestyle='--', alpha=0.4)
+    ax.legend()
+    ax.minorticks_off()
+    fig.tight_layout()
+
+    return fig
+

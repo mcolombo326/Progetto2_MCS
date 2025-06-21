@@ -1,5 +1,6 @@
-import numpy as np
 import time
+import numpy as np
+
 from dct2_custom import dct2_custom
 from dct2_scipy import dct2_scipy
 
@@ -26,11 +27,3 @@ def benchmark(N_values):
 
     return times_custom, times_scipy
 
-if __name__ == "__main__":
-    N_values = [16, 32, 64, 128, 256]
-    times_custom, times_scipy = benchmark(N_values)
-
-    # Salva i dati su file
-    np.savetxt("times_custom.txt", times_custom)
-    np.savetxt("times_scipy.txt", times_scipy)
-    np.savetxt("N_values.txt", N_values)
