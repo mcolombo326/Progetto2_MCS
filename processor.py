@@ -33,21 +33,46 @@ def process_image(filename, F, d, output_folder=COMPRESSED_IMAGE_DIR):
     compressed_path = os.path.join(output_folder, "compressed.png")
     img_rec.save(compressed_path)
 
+    # Salva immagine originale temporanea per calcolare dimensione in byte
+    original_temp_path = os.path.join(output_folder, "original_temp.png")
+    img.save(original_temp_path)
+
+    # Calcola dimensioni in byte
+    original_size = os.path.getsize(original_temp_path)
+    compressed_size = os.path.getsize(compressed_path)
+
     # Crea figura confronto
     fig, axs = plt.subplots(1, 2, figsize=(10, 5))
+
+    # Originale
     axs[0].imshow(img_array, cmap='gray', vmin=0, vmax=255)
     axs[0].set_title('Originale')
     axs[0].axis('off')
+    axs[0].text(0.5, -0.1, f"Dimensione: {original_size} byte",
+                transform=axs[0].transAxes, ha='center', fontsize=10)
 
+    # Compressa
     axs[1].imshow(img_rec, cmap='gray', vmin=0, vmax=255)
     axs[1].set_title(f'Compressa (F={F}, d={d})')
     axs[1].axis('off')
+    axs[1].text(0.5, -0.1, f"Dimensione: {compressed_size} byte",
+                transform=axs[1].transAxes, ha='center', fontsize=10)
 
     plt.tight_layout()
 
     # Salva immagine confronto
     comparison_path = os.path.join(output_folder, "comparison.png")
     fig.savefig(comparison_path)
-    plt.close(fig)  # Chiude la figura per evitare finestre aperte multiple
+    plt.close(fig)
+
+    # Mostra la figura a schermo
+    img_fig = plt.imread(comparison_path)
+    plt.figure(figsize=(10, 5))
+    plt.imshow(img_fig)
+    plt.axis('off')
+    plt.show()
+
+    # Rimuove l'immagine originale temporanea
+    os.remove(original_temp_path)
 
     return compressed_path, comparison_path
