@@ -2,11 +2,11 @@ import time
 import numpy as np
 
 from dct2_custom import dct2_custom
-from dct2_scipy import dct2_scipy
+from dct2_fast import dct2_fast
 
 def benchmark(N_values):
     times_custom = []
-    times_scipy = []
+    times_fast = []
 
     for N in N_values:
         A = np.random.rand(N, N)
@@ -19,11 +19,11 @@ def benchmark(N_values):
 
         # Tempo DCT scipy
         start = time.perf_counter()
-        dct2_scipy(A)
+        dct2_fast(A)
         end = time.perf_counter()
-        times_scipy.append(end - start)
+        times_fast.append(end - start)
 
         print(f"N={N} completato")
 
-    return times_custom, times_scipy
+    return times_custom, times_fast
 
