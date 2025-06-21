@@ -1,8 +1,5 @@
-
-
-def main():
-    print("Benvenuto nel programma di analisi delle matrici!")
-
+from dct_GUI import run_gui
 
 if __name__ == "__main__":
-    main()
+    run_gui()
+

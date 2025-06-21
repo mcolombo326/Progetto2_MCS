@@ -1,6 +1,4 @@
-import numpy as np
-
-from dct2.utils import *
+from utils import *
 from dct2.benchmark import benchmark
 from dct2.plot_times import plot_times
 
