@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 from processor import process_image
 import os
 
@@ -10,27 +10,44 @@ class ImageCompressorGUI:
 
         self.file_path = None
 
+        # Frame principale
+        main_frame = ttk.Frame(root, padding=20)
+        main_frame.grid(row=0, column=0, sticky="nsew")
+
+        root.grid_rowconfigure(0, weight=1)
+        root.grid_columnconfigure(0, weight=1)
+
         # Pulsante per selezionare immagine
-        self.load_button = tk.Button(root, text="Carica immagine", command=self.load_image)
-        self.load_button.grid(row=0, column=0, padx=10, pady=10)
+        self.load_button = ttk.Button(main_frame, text="Carica immagine", command=self.load_image)
+        self.load_button.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
 
-        self.file_label = tk.Label(root, text="Nessun file selezionato")
-        self.file_label.grid(row=0, column=1, padx=10, pady=10)
+        self.file_label = ttk.Label(main_frame, text="Nessun file selezionato")
+        self.file_label.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
 
-        tk.Label(root, text="Dimensione blocco F:").grid(row=1, column=0, padx=10, pady=5)
-        self.F_entry = tk.Entry(root)
-        self.F_entry.grid(row=1, column=1, padx=10, pady=5)
+        # Parametro F
+        ttk.Label(main_frame, text="Dimensione blocco F:").grid(row=1, column=0, padx=10, pady=5, sticky="e")
+        self.F_entry = ttk.Entry(main_frame)
+        self.F_entry.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
         self.F_entry.bind("<KeyRelease>", self.update_d_range)
 
-        tk.Label(root, text="Soglia frequenze d:").grid(row=2, column=0, padx=10, pady=5)
-        self.d_entry = tk.Entry(root)
-        self.d_entry.grid(row=2, column=1, padx=10, pady=5)
+        # Parametro d
+        ttk.Label(main_frame, text="Soglia frequenze d:").grid(row=2, column=0, padx=10, pady=5, sticky="e")
+        self.d_entry = ttk.Entry(main_frame)
+        self.d_entry.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
 
-        self.d_range_label = tk.Label(root, text="Range d: n.d.")
-        self.d_range_label.grid(row=3, column=0, columnspan=2, padx=10, pady=5)
+        # Range d sotto la casella d
+        self.d_range_label = ttk.Label(main_frame, text="Range d: n.d.")
+        self.d_range_label.grid(row=3, column=1, padx=10, pady=5, sticky="w")
 
-        self.run_button = tk.Button(root, text="Esegui compressione", command=self.run_compression)
-        self.run_button.grid(row=4, column=0, columnspan=2, padx=10, pady=20)
+        # Pulsante esegui
+        self.run_button = ttk.Button(main_frame, text="Esegui compressione", command=self.run_compression)
+        self.run_button.grid(row=4, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
+
+        # Configura la griglia del main_frame
+        for i in range(5):
+            main_frame.grid_rowconfigure(i, weight=1)
+        main_frame.grid_columnconfigure(0, weight=1)
+        main_frame.grid_columnconfigure(1, weight=2)
 
     def load_image(self):
         file_path = filedialog.askopenfilename(title="Seleziona immagine BMP", filetypes=[("BMP files", "*.bmp")])
@@ -63,8 +80,11 @@ class ImageCompressorGUI:
             messagebox.showerror("Errore", f"Il valore di d deve essere tra 0 e {2 * F - 2}.")
             return
 
-        # Esegue compressione e salva direttamente
-        process_image(self.file_path, F, d)
+        try:
+            compressed_path, comparison_path = process_image(self.file_path, F, d)
+        except ValueError as e:
+            messagebox.showerror("Errore", str(e))
+            return
 
         messagebox.showinfo("Completato", "Compressione completata.\nImmagini salvate nella cartella di output.")
 

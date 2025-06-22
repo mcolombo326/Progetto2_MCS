@@ -14,6 +14,12 @@ def process_image(filename, F, d, output_folder=COMPRESSED_IMAGE_DIR):
     # Carica immagine e converte in scala di grigi
     img = Image.open(filename).convert('L')
     img_array = np.array(img, dtype=np.float32)
+
+    # Controlla che F sia compatibile con l'immagine
+    if F > img_array.shape[0] or F > img_array.shape[1]:
+        raise ValueError(
+            f"F troppo grande ({F}) per le dimensioni dell'immagine ({img_array.shape[1]}x{img_array.shape[0]})")
+
     blocks = split_into_blocks(img_array, F)
 
     new_blocks = np.empty_like(blocks)
@@ -58,7 +64,8 @@ def process_image(filename, F, d, output_folder=COMPRESSED_IMAGE_DIR):
     axs[1].text(0.5, -0.1, f"Dimensione: {compressed_size} byte",
                 transform=axs[1].transAxes, ha='center', fontsize=10)
 
-    plt.tight_layout()
+    # Sistema margini per non far tagliare le scritte sotto
+    plt.subplots_adjust(top=0.9, bottom=0.2, wspace=0.3)
 
     # Salva immagine confronto
     comparison_path = os.path.join(output_folder, "comparison.png")

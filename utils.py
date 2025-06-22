@@ -18,7 +18,6 @@ def clear_folder(folder):
     else:
         os.makedirs(folder)
 
-
 def split_into_blocks(image_array, F):
     H, W = image_array.shape
     H_cropped, W_cropped = H - H % F, W - W % F
