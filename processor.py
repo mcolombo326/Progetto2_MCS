@@ -49,10 +49,13 @@ def create_output_images(original_img, compressed_img, F, d, output_folder):
     Salva immagine compressa, immagine originale temporanea per il calcolo dimensioni,
     genera il grafico di confronto, lo salva e lo mostra a schermo.
     """
+    img_rec_rgb = compressed_img.convert('RGB')  # Converti in RGB per matplotlib
+    original_img = original_img.convert('RGB')  # Converti in RGB per matplotlib
+
     # Percorsi file
-    compressed_path = os.path.join(output_folder, "compressed.png")
-    original_temp_path = os.path.join(output_folder, "original_temp.png")
-    comparison_path = os.path.join(output_folder, "comparison.png")
+    compressed_path = os.path.join(output_folder, "compressed.jpg")
+    original_temp_path = os.path.join(output_folder, "original_temp.jpg")
+    comparison_path = os.path.join(output_folder, "comparison.jpg")
 
     # Salva immagini
     compressed_img.save(compressed_path)
@@ -86,12 +89,12 @@ def create_output_images(original_img, compressed_img, F, d, output_folder):
     fig.savefig(comparison_path)
     plt.close(fig)
 
-    # Mostra la figura a schermo
+    '''# Mostra la figura a schermo
     img_fig = plt.imread(comparison_path)
     plt.figure(figsize=(10, 5))
     plt.imshow(img_fig)
     plt.axis('off')
-    plt.show()
+    plt.show()'''
 
     # Rimuove immagine originale temporanea
     os.remove(original_temp_path)

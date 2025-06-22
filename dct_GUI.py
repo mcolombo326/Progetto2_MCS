@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
+from PIL import Image, ImageTk
 from processor import process_image
 import os
 
@@ -9,6 +10,7 @@ class ImageCompressorGUI:
         self.root.title("Compressore DCT")
 
         self.file_path = None
+        self.comparison_img_tk = None  # riferimento all'immagine Tkinter (serve per non farla garbage collected)
 
         # Frame principale
         main_frame = ttk.Frame(root, padding=20)
@@ -43,8 +45,12 @@ class ImageCompressorGUI:
         self.run_button = ttk.Button(main_frame, text="Esegui compressione", command=self.run_compression)
         self.run_button.grid(row=4, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
 
+        # Label per mostrare immagine confronto
+        self.image_label = ttk.Label(main_frame)
+        self.image_label.grid(row=5, column=0, columnspan=2, pady=10)
+
         # Configura la griglia del main_frame
-        for i in range(5):
+        for i in range(6):
             main_frame.grid_rowconfigure(i, weight=1)
         main_frame.grid_columnconfigure(0, weight=1)
         main_frame.grid_columnconfigure(1, weight=2)
@@ -85,6 +91,12 @@ class ImageCompressorGUI:
         except ValueError as e:
             messagebox.showerror("Errore", str(e))
             return
+
+        # Mostra l'immagine di confronto dentro Tkinter
+        img = Image.open(comparison_path)
+        img.thumbnail((600, 300))  # opzionale, per ridimensionare e adattare
+        self.comparison_img_tk = ImageTk.PhotoImage(img)
+        self.image_label.config(image=self.comparison_img_tk)
 
         messagebox.showinfo("Completato", "Compressione completata.\nImmagini salvate nella cartella di output.")
 

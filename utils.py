@@ -3,7 +3,7 @@ import shutil
 
 import numpy as np
 
-RESULT_DIR = "dct2/benchmark_result"
+RESULT_DIR = "benchmark_result"
 COMPRESSED_IMAGE_DIR = "compressed_image"
 
 def clear_folder(folder):
