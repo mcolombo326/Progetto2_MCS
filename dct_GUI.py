@@ -5,7 +5,7 @@ from processor import process_image
 import os
 
 class ImageCompressorGUI:
-    def __init__(self, root):  # <-- CORRETTO: era "_init_" con un solo underscore
+    def __init__(self, root):
         self.root = root
         self.root.title("Compressore DCT")
 
@@ -19,7 +19,7 @@ class ImageCompressorGUI:
         main_frame.grid_columnconfigure(0, weight=1)
 
         # RIGA 0: Titolo centrato
-        title_label = ttk.Label(main_frame, text="Compressore DCT", font=("Arial", 18, "bold"), anchor="center")
+        title_label = ttk.Label(main_frame, text="Compressore DCT", font=("Arial", 22, "bold"), anchor="center")
         title_label.grid(row=0, column=0, pady=(0, 20), sticky="ew")
 
         # RIGA 1: Pulsante carica immagine
@@ -31,7 +31,7 @@ class ImageCompressorGUI:
         self.file_label.grid(row=2, column=0, pady=(0, 15), sticky="ew")
 
         # RIGA 3: Label F centrata
-        self.f_label = ttk.Label(main_frame, text="Dimensione blocco F:", anchor="center")
+        self.f_label = ttk.Label(main_frame, text="Dimensione blocco F:", font=("Arial", 15, "bold"), anchor="center")
         self.f_label.grid(row=3, column=0, pady=(0, 2), sticky="ew")
 
         # RIGA 4: Entry F
@@ -39,13 +39,13 @@ class ImageCompressorGUI:
         self.F_entry.grid(row=4, column=0, pady=(0, 10), sticky="ew")
         self.F_entry.bind("<KeyRelease>", self.update_d_range)
 
-        # RIGA 5: Range d dinamico
-        self.d_range_label = ttk.Label(main_frame, text="Range d: n.d.", anchor="center")
-        self.d_range_label.grid(row=5, column=0, pady=(0, 10), sticky="ew")
+        # RIGA 5: Label soglia d
+        self.d_label = ttk.Label(main_frame, text="Soglia frequenze d:",font=("Arial", 15, "bold"), anchor="center")
+        self.d_label.grid(row=5, column=0, pady=(0, 2), sticky="ew")
 
-        # RIGA 6: Label soglia d
-        self.d_label = ttk.Label(main_frame, text="Soglia frequenze d:", anchor="center")
-        self.d_label.grid(row=6, column=0, pady=(0, 2), sticky="ew")
+        # RIGA 6: Range d dinamico
+        self.d_range_label = ttk.Label(main_frame, text="Range d: n.d.", anchor="center")
+        self.d_range_label.grid(row=6, column=0, pady=(0, 10), sticky="ew")
 
         # RIGA 7: Entry d
         self.d_entry = ttk.Entry(main_frame, justify="center")
@@ -124,7 +124,7 @@ def run_gui():
     root = tk.Tk()
     # Dimensioni fisse della finestra
     window_width = 900
-    window_height = 700
+    window_height = 750
     # Ottieni dimensioni dello schermo
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
