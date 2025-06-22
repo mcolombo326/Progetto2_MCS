@@ -10,50 +10,55 @@ class ImageCompressorGUI:
         self.root.title("Compressore DCT")
 
         self.file_path = None
-        self.comparison_img_tk = None  # riferimento all'immagine Tkinter (serve per non farla garbage collected)
 
-        # Frame principale
         main_frame = ttk.Frame(root, padding=20)
         main_frame.grid(row=0, column=0, sticky="nsew")
 
         root.grid_rowconfigure(0, weight=1)
         root.grid_columnconfigure(0, weight=1)
 
-        # Pulsante per selezionare immagine
+        # Titolo centrato (riga 0)
+        title_label = ttk.Label(main_frame, text="Compressore DCT", font=("Arial", 16, "bold"))
+        title_label.grid(row=0, column=0, columnspan=2, pady=(0, 20), sticky="ew")
+
+        # Pulsante carica (riga 1)
         self.load_button = ttk.Button(main_frame, text="Carica immagine", command=self.load_image)
-        self.load_button.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+        self.load_button.grid(row=1, column=0, columnspan=2, pady=5, sticky="ew")
 
-        self.file_label = ttk.Label(main_frame, text="Nessun file selezionato")
-        self.file_label.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
+        # Etichetta nome file sotto il pulsante (riga 2), centrata orizzontalmente
+        self.file_label = ttk.Label(main_frame, text="Nessun file selezionato", anchor="center")
+        self.file_label.grid(row=2, column=0, columnspan=2, pady=5, sticky="ew")
 
-        # Parametro F
-        ttk.Label(main_frame, text="Dimensione blocco F:").grid(row=1, column=0, padx=10, pady=5, sticky="e")
-        self.F_entry = ttk.Entry(main_frame)
-        self.F_entry.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
-        self.F_entry.bind("<KeyRelease>", self.update_d_range)
+        # Label F (riga 3, col 0)
+        ttk.Label(main_frame, text="Dimensione blocco F:").grid(row=3, column=0, sticky="w", padx=5)
 
-        # Parametro d
-        ttk.Label(main_frame, text="Soglia frequenze d:").grid(row=2, column=0, padx=10, pady=5, sticky="e")
-        self.d_entry = ttk.Entry(main_frame)
-        self.d_entry.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+        # Entry F (riga 4, col 0), centrata
+        self.F_entry = ttk.Entry(main_frame, justify="center")
+        self.F_entry.grid(row=4, column=0, padx=5, pady=(0,10), sticky="ew")
 
-        # Range d sotto la casella d
-        self.d_range_label = ttk.Label(main_frame, text="Range d: n.d.")
-        self.d_range_label.grid(row=3, column=1, padx=10, pady=5, sticky="w")
+        # Label d con range (riga 3, col 1)
+        d_label_frame = ttk.Frame(main_frame)
+        d_label_frame.grid(row=3, column=1, sticky="ew", padx=5)
 
-        # Pulsante esegui
+        self.d_label = ttk.Label(d_label_frame, text="Soglia frequenze d:")
+        self.d_label.pack(side="left")
+
+        self.d_range_label = ttk.Label(d_label_frame, text="Range d: n.d.")
+        self.d_range_label.pack(side="right")
+
+        # Entry d (riga 4, col 1), centrata
+        self.d_entry = ttk.Entry(main_frame, justify="center")
+        self.d_entry.grid(row=4, column=1, padx=5, pady=(0,10), sticky="ew")
+
+        # Pulsante esegui compressione (riga 5, col 0 e 1)
         self.run_button = ttk.Button(main_frame, text="Esegui compressione", command=self.run_compression)
-        self.run_button.grid(row=4, column=0, columnspan=2, padx=10, pady=20, sticky="ew")
+        self.run_button.grid(row=5, column=0, columnspan=2, pady=20, sticky="ew")
 
-        # Label per mostrare immagine confronto
-        self.image_label = ttk.Label(main_frame)
-        self.image_label.grid(row=5, column=0, columnspan=2, pady=10)
-
-        # Configura la griglia del main_frame
-        for i in range(6):
-            main_frame.grid_rowconfigure(i, weight=1)
+        # Configura il peso delle colonne per farle espandere correttamente
         main_frame.grid_columnconfigure(0, weight=1)
-        main_frame.grid_columnconfigure(1, weight=2)
+        main_frame.grid_columnconfigure(1, weight=1)
+
+
 
     def load_image(self):
         file_path = filedialog.askopenfilename(title="Seleziona immagine BMP", filetypes=[("BMP files", "*.bmp")])
