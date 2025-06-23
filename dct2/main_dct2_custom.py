@@ -1,8 +1,16 @@
 from utils import *
 from dct2.benchmark import benchmark
 from dct2.plot_times import plot_times
+from dct2.test_dct2 import is_dct2_and_dct1d_correct
 
 def main_dct2_custom():
+    # Verifica preliminare della correttezza della DCT
+    if is_dct2_and_dct1d_correct():
+        print("✅ Test DCT2 e DCT1D superato. Avvio benchmark...\n")
+    else:
+        print("❌ ERRORE: DCT2 o DCT1D non producono risultati corretti. Interruzione del programma.")
+        return
+
     N_values = [8, 16, 32, 64, 128, 256]
 
     # Esegui benchmark
