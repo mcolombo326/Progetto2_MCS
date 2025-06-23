@@ -61,9 +61,9 @@ def create_output_images(original_img, compressed_img, F, d, output_folder):
     compressed_img.save(compressed_path)
     original_img.save(original_temp_path)
 
-    # Calcola dimensioni in byte
-    original_size = os.path.getsize(original_temp_path)
-    compressed_size = os.path.getsize(compressed_path)
+    # Calcola dimensioni in kB
+    original_size_kb = os.path.getsize(original_temp_path) / 1024
+    compressed_size_kb = os.path.getsize(compressed_path) / 1024
 
     # Crea figura di confronto
     fig, axs = plt.subplots(1, 2, figsize=(10, 5))
@@ -72,14 +72,14 @@ def create_output_images(original_img, compressed_img, F, d, output_folder):
     axs[0].imshow(np.array(original_img), cmap='gray', vmin=0, vmax=255)
     axs[0].set_title('Originale')
     axs[0].axis('off')
-    axs[0].text(0.5, -0.1, f"Dimensione: {original_size} byte",
+    axs[0].text(0.5, -0.1, f"Dimensione: {original_size_kb:.3f} kB",
                 transform=axs[0].transAxes, ha='center', fontsize=10)
 
     # Compressa
     axs[1].imshow(compressed_img, cmap='gray', vmin=0, vmax=255)
     axs[1].set_title(f'Compressa (F={F}, d={d})')
     axs[1].axis('off')
-    axs[1].text(0.5, -0.1, f"Dimensione: {compressed_size} byte",
+    axs[1].text(0.5, -0.1, f"Dimensione: {compressed_size_kb:.3f} kB",
                 transform=axs[1].transAxes, ha='center', fontsize=10)
 
     # Sistema margini per non far tagliare le scritte sotto
