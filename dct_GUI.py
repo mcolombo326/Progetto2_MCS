@@ -99,11 +99,11 @@ class ImageCompressorGUI:
         # Mostra l'immagine di confronto
         img = Image.open(comparison_path)
 
-        # Adatta esattamente alle dimensioni desiderate (finestra fissa 900x700)
-        target_width = 860  # spazio interno stimato (900 - padding/margini)
-        target_height = 400  # altezza ideale per l’immagine
+        # Dimensioni target per ridimensionare immagine
+        target_width = 860
+        target_height = 400
 
-        # Ridimensiona con proporzioni mantenute
+        # Ridimensiona mantenendo proporzioni
         img_ratio = img.width / img.height
         target_ratio = target_width / target_height
 
@@ -119,19 +119,29 @@ class ImageCompressorGUI:
         self.image_label.config(image=self.comparison_img_tk)
         self.image_label.image = self.comparison_img_tk
 
+        # Ridimensiona la finestra a 900x750 e la centra
+        self.resize_and_center_window(900, 750)
+
         messagebox.showinfo("Completato", "Compressione completata.\nImmagini salvate nella cartella di output.")
+
+    def resize_and_center_window(self, width, height):
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        x = (screen_width // 2) - (width // 2)
+        y = (screen_height // 2) - (height // 2)
+        self.root.geometry(f"{width}x{height}+{x}+{y}")
+        self.root.resizable(False, False)
+
 def run_gui():
     root = tk.Tk()
-    # Dimensioni fisse della finestra
-    window_width = 900
-    window_height = 750
-    # Ottieni dimensioni dello schermo
+    # Dimensioni iniziali più piccole
+    window_width = 390
+    window_height = 380
+    # Centra la finestra
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-    # Calcola posizione per centrare
     x = (screen_width // 2) - (window_width // 2)
     y = (screen_height // 2) - (window_height // 2)
-    # Imposta dimensioni e posizione centrata
     root.geometry(f"{window_width}x{window_height}+{x}+{y}")
     root.resizable(False, False)
     app = ImageCompressorGUI(root)
