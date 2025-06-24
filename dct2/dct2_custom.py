@@ -7,7 +7,12 @@ def dct_1d(vector):
         sum_val = 0
         for n in range(N):
             sum_val += vector[n] * np.cos(np.pi * (n + 0.5) * k / N)
-        result[k] = sum_val
+        # Normalizzazione ortonormale
+        if k == 0:
+            coeff = np.sqrt(1 / N)
+        else:
+            coeff = np.sqrt(2 / N)
+        result[k] = coeff * sum_val
     return result
 
 def dct2_custom(matrix):
